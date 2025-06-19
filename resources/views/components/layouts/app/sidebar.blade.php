@@ -14,7 +14,8 @@
             <flux:navlist variant="outline">
                 <flux:navlist.group :heading="__('Platform')" class="grid">
                     <flux:navlist.item icon="home" :href="route('dashboard')" :current="request()->routeIs('dashboard')" wire:navigate>{{ __('Dashboard') }}</flux:navlist.item>
-                    <flux:navlist.item icon="home" :href="route('admin.canales-agua.index')" :current="request()->routeIs('admin.canales-agua.index')" wire:navigate>{{ __('Canal de Agua') }}</flux:navlist.item>
+                    <flux:navlist.item icon="folder" :href="route('admin.canales-agua.index')" :current="request()->routeIs('admin.canales-agua.index')" wire:navigate>{{ __('Canal de Agua') }}</flux:navlist.item>
+                    <flux:navlist.item icon="user" :href="route('admin.usuarios.index')" :current="request()->routeIs('admin.usuarios.index')" wire:navigate>{{ __('Usuarios de Agua') }}</flux:navlist.item>
                 </flux:navlist.group>
             </flux:navlist>
 

@@ -1,4 +1,4 @@
-<div class="w-full py-8 px-4 sm:px-6 lg:px-8" x-data="canalesAguaTable()">
+<div class="w-full py-8 px-4 sm:px-6 lg:px-8" x-data="usuarios_tabla()">
     <!-- Notificaciones -->
     @if (session('success'))
         <script>
@@ -38,7 +38,7 @@
     <div class="w-full bg-zinc-900 rounded-xl shadow-2xl overflow-hidden p-6 border border-zinc-800">
         <div class="flex justify-between items-center mb-6">
             <h1 class="text-2xl font-bold text-white">
-                Lista de Canales de Agua
+                Lista de Usuarios
             </h1>
         </div>
 
@@ -47,21 +47,25 @@
                 <thead class="bg-zinc-800">
                     <tr>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">#</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Canal</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Descripción</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Nombre</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Apellido</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Correo</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Contraseña</th>
                         <th class="px-4 py-3 text-right text-sm font-medium text-zinc-300 uppercase">Acciones</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-zinc-800">
-                    @foreach ($channelWaters as $channelWater)
+                    @foreach ($usuarios as $usuario)
                         <tr>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $loop->iteration }}</td>
-                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $channelWater->channel }}</td>
-                            <td class="px-4 py-4 text-sm text-zinc-300">{{ Str::limit($channelWater->description, 50) }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $usuario->name }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $usuario->lastname }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $usuario->email }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">--------------</td>
                             <td class="px-4 py-4 text-sm text-right">
                                 <!-- Botón Editar -->
                                 <button
-                                    @click="openModal({{ $channelWater->id }}, '{{ addslashes($channelWater->channel) }}', '{{ addslashes($channelWater->description) }}')"
+                                    @click="openModal({{ $usuario->id }}, '{{ addslashes($usuario->name) }}', '{{ addslashes($usuario->lastname) }}, '{{ addslashes($usuario->email) }}, '{{ addslashes($usuario->password) }}')"
                                     class="text-blue-500 hover:text-blue-400 mr-3">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                         fill="currentColor">
@@ -71,7 +75,7 @@
                                 </button>
 
                                 <!-- Botón Eliminar -->
-                                <button onclick="confirmDelete({{ $channelWater->id }})"
+                                <button onclick="confirmDelete({{ $usuario->id }})"
                                     class="text-red-500 hover:text-red-400">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20"
                                         fill="currentColor">
@@ -82,8 +86,8 @@
                                 </button>
 
                                 <!-- Formulario Eliminar (oculto) -->
-                                <form id="delete-form-{{ $channelWater->id }}"
-                                    action="{{ route('admin.canales-agua.destroy', $channelWater->id) }}" method="POST"
+                                <form id="delete-form-{{ $usuario->id }}"
+                                    action="{{ route('admin.usuarios.destroy', $usuario->id) }}" method="POST"
                                     class="hidden">
                                     @csrf
                                     @method('DELETE')
@@ -96,9 +100,9 @@
         </div>
 
         <!-- Paginación -->
-        @if ($channelWaters->hasPages())
+        @if ($usuarios->hasPages())
             <div class="mt-6">
-                {{ $channelWaters->links() }}
+                {{ $usuarios->links() }}
             </div>
         @endif
     </div>
@@ -117,29 +121,44 @@
                 <!-- Contenido del Modal -->
                 <div
                     class="inline-block align-bottom bg-zinc-900 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-4xl sm:w-full border border-zinc-800">
-                    <form :action="'/admin/canales-agua/' + currentId" method="POST">
+                    <form :action="'/admin/usuarios/' + currentId" method="POST">
                         @csrf
                         @method('PUT')
 
                         <div class="px-8 py-8">
-                            <h3 class="text-xl font-semibold text-white mb-6">Editar Canal de Agua</h3>
+                            <h3 class="text-xl font-semibold text-white mb-6">Editar Usuario</h3>
 
-                            <!-- Campo Canal -->
+                            <!-- Campo nombre -->
                             <div class="mb-6">
-                                <label class="block text-sm font-medium text-zinc-300 mb-2">Canal</label>
-                                <input type="text" x-model="currentChannel" name="channel"
+                                <label class="block text-sm font-medium text-zinc-300 mb-2">Nombre</label>
+                                <input type="text" x-model="currentName" name="name"
                                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                                     required>
                             </div>
 
-                            <!-- Campo Descripción -->
+                            <!-- Campo apellido -->
                             <div class="mb-6">
-                                <label class="block text-sm font-medium text-zinc-300 mb-2">Descripción</label>
-                                <textarea x-model="currentDescription" name="description" rows="5"
+                                <label class="block text-sm font-medium text-zinc-300 mb-2">Apellido</label>
+                                <input type="text" x-model="currentLastname" name="lastname"
                                     class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    required></textarea>
+                                    required>
                             </div>
-                        </div>
+
+                            <!-- Campo email -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-zinc-300 mb-2">Correo</label>
+                                <input type="email" x-model="currentEmail" name="email"
+                                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    required>
+                            </div>
+
+                            <!-- Campo password -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-zinc-300 mb-2">Contraseña</label>
+                                <input type="password" x-model="currentPassword" name="password"
+                                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    required>
+                            </div>
 
                         <div class="px-8 py-4 bg-zinc-800 flex justify-end space-x-4">
                             <button type="button" @click="closeModal" class="px-6 py-3 text-zinc-300 hover:text-white">
@@ -161,7 +180,7 @@
     // Función para confirmar eliminación
     function confirmDelete(id) {
         Swal.fire({
-            title: '¿Eliminar canal de agua?',
+            title: '¿Eliminar usuario?',
             text: "¡No podrás revertir esto!",
             icon: 'warning',
             background: '#18181b',
@@ -183,17 +202,21 @@
     }
 
     // Componente Alpine.js para la tabla de canales de agua
-    function canalAguaTable() {
+    function uisuarios_agua() {
         return {
             isOpen: false,
             currentId: null,
-            currentChannel: '',
-            currentDescription: '',
+            currentName: '',
+            currentLastname: '',
+            currentEmail: '',
+            currentPassword: '',
 
-            openModal(id, channel, description) {
+            openModal(id, name, lastname, email, password) {
                 this.currentId = id;
-                this.currentChannel = channel;
-                this.currentDescription = description;
+                this.currentName = name;
+                this.currentLastname = lastname;
+                this.currentEmail = email;
+                this.currentPassword = password;
                 this.isOpen = true;
                 document.body.classList.add('overflow-hidden');
             },
