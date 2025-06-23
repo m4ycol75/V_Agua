@@ -41,9 +41,21 @@
         </h1>
         <form action="{{ route('admin.usuarios.store') }}" method="POST" class="space-y-6">
             @csrf
+            <!-- Campo dni -->
+            <div>
+                <label for="dni" class="block text-sm font-medium text-zinc-300 mb-1">
+                    DNI <span class="text-red-500">*</span>
+                </label>
+                <input type="text" id="dni" name="dni"
+                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
+                    placeholder="Ej: Canal Principal" required>
+                @error('dni')
+                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
+                @enderror
+            </div>
             <!-- Campo Nombre -->
             <div>
-                <label for="channel" class="block text-sm font-medium text-zinc-300 mb-1">
+                <label for="nombre" class="block text-sm font-medium text-zinc-300 mb-1">
                     Nombre <span class="text-red-500">*</span>
                 </label>
                 <input type="text" id="name" name="name"
@@ -55,7 +67,7 @@
             </div>
             <!-- Campo Apellido -->
             <div>
-                <label for="channel" class="block text-sm font-medium text-zinc-300 mb-1">
+                <label for="apellido" class="block text-sm font-medium text-zinc-300 mb-1">
                     Apellido <span class="text-red-500">*</span>
                 </label>
                 <input type="text" id="lastname" name="lastname"
@@ -67,7 +79,7 @@
             </div>
             <!-- Campo Email -->
             <div>
-                <label for="channel" class="block text-sm font-medium text-zinc-300 mb-1">
+                <label for="email" class="block text-sm font-medium text-zinc-300 mb-1">
                     Correo <span class="text-red-500">*</span>
                 </label>
                 <input type="email" id="email" name="email"
@@ -77,18 +89,7 @@
                     <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
                 @enderror
             </div>
-            <!-- Campo Password -->
-            <div>
-                <label for="channel" class="block text-sm font-medium text-zinc-300 mb-1">
-                    Contraseña <span class="text-red-500">*</span>
-                </label>
-                <input type="password" id="password" name="password"
-                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 text-white placeholder-zinc-500"
-                    placeholder="Ej: Canal Principal" required>
-                @error('password')
-                    <p class="mt-1 text-sm text-red-500 font-medium">{{ $message }}</p>
-                @enderror
-            </div>
+            
             <!-- Nota de campos obligatorios -->
             <div class="text-sm text-zinc-500 mb-6">
                 Campos marcados con <span class="text-red-500 font-bold">*</span> son obligatorios

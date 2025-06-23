@@ -18,23 +18,25 @@ class UsuariosController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
+            'dni' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'email' => 'required|string|max:255',
-            'password' => 'required|string|max:255',
+            
         ]);
 
         try {
             $validator ->validate();
 
             $usuarios = Usuarios::create([
+                'dni' => $request->dni,
                 'name' => $request->name,
                 'lastname' => $request->lastname,
                 'email' => $request->email,
-                'password' => $request->password,
+                
             ]);
 
-            return redirect()->route('admin.canales-agua.index')
+            return redirect()->route('admin.usuarios.index')
                 ->with('success', 'Canal de agua creado exitosamente.');
         } catch (ValidationException $e) {
             return redirect()->back()
@@ -46,10 +48,10 @@ class UsuariosController extends Controller
     public function update(Request $request, string $id)
     {
         $validator = Validator::make($request->all(), [
+            'dni' => 'required|string|max:255',
             'name' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'email' => 'required|string|max:255',
-            'password' => 'required|string|max:255',
         ]);
 
         try {
@@ -57,10 +59,11 @@ class UsuariosController extends Controller
 
             $usuarios = Usuarios::findOrFail($id);
             $usuarios->update([
+                'dni' => $request->dni,
                 'name' => $request->name,
                 'lastname' => $request->lastname,
                 'email' => $request->email,
-                'password' => $request->password,
+
             ]);
 
             return redirect()->route('admin.usuarios.index')

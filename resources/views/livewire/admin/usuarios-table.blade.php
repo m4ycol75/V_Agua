@@ -47,10 +47,10 @@
                 <thead class="bg-zinc-800">
                     <tr>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">#</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">DNI</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Nombre</th>
                         <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Apellido</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Correo</th>
-                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Contraseña</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-zinc-300 uppercase">Correo</th>    
                         <th class="px-4 py-3 text-right text-sm font-medium text-zinc-300 uppercase">Acciones</th>
                     </tr>
                 </thead>
@@ -58,10 +58,11 @@
                     @foreach ($usuarios as $usuario)
                         <tr>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $loop->iteration }}</td>
+                            <td class="px-4 py-4 text-sm text-zinc-300">{{ $usuario->dni }}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $usuario->name }}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $usuario->lastname }}</td>
                             <td class="px-4 py-4 text-sm text-zinc-300">{{ $usuario->email }}</td>
-                            <td class="px-4 py-4 text-sm text-zinc-300">--------------</td>
+                            
                             <td class="px-4 py-4 text-sm text-right">
                                 <!-- Botón Editar -->
                                 <button
@@ -128,6 +129,14 @@
                         <div class="px-8 py-8">
                             <h3 class="text-xl font-semibold text-white mb-6">Editar Usuario</h3>
 
+                            <!-- Campo dni -->
+                            <div class="mb-6">
+                                <label class="block text-sm font-medium text-zinc-300 mb-2">Contraseña</label>
+                                <input type="text" x-model="currentDni" name="dni"
+                                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                                    required>
+                            </div>
+
                             <!-- Campo nombre -->
                             <div class="mb-6">
                                 <label class="block text-sm font-medium text-zinc-300 mb-2">Nombre</label>
@@ -152,13 +161,7 @@
                                     required>
                             </div>
 
-                            <!-- Campo password -->
-                            <div class="mb-6">
-                                <label class="block text-sm font-medium text-zinc-300 mb-2">Contraseña</label>
-                                <input type="password" x-model="currentPassword" name="password"
-                                    class="w-full px-4 py-3 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                                    required>
-                            </div>
+                            
 
                         <div class="px-8 py-4 bg-zinc-800 flex justify-end space-x-4">
                             <button type="button" @click="closeModal" class="px-6 py-3 text-zinc-300 hover:text-white">
